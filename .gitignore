@@ -30,6 +30,7 @@ data/svrdd/labels/
 data/flywire/*.parquet
 data/flywire/*.pt
 data/flywire/*.zip
+results/weights/
 *.zip
 *.tar.gz
 *.h5

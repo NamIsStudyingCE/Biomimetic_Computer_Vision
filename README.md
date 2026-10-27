@@ -30,13 +30,13 @@ Nghiên cứu này mô hình hóa hệ thống thị giác của ruồi giấm (
 | :---: | :--- | :--- | :---: |
 | **GD0** | **Nền tảng, Toy Model & Kiểm chứng Thực nghiệm** | Mô phỏng EMD đối kháng, UI tương tác 60 FPS, khảo sát SVRDD | [`GD0/BAO_CAO_GIAI_DOAN_0.md`](GD0/BAO_CAO_GIAI_DOAN_0.md) | ✅ **Hoàn thành** |
 | **GD1** | **Trích xuất Connectome & Cột Thị giác Lục giác** | Parser bảng tĩnh FlyWire, ma trận kề $W_{ij}$ có dấu (GABA/ACh), Biểu đồ 300 DPI | [`GD1/BAO_CAO_GIAI_DOAN_1.md`](GD1/BAO_CAO_GIAI_DOAN_1.md) | ✅ **Hoàn thành** |
-| **GD2** | **Mô hình Hóa Đồ thị & Symmetrical Baselines** | Mạng nơ-ron Bio-vision, Shuffled Graph Control, Classical CNN | `src/models/` | 🔄 Kế tiếp |
-| **GD3** | **Khảo sát Triệt tiêu (Ablation) & Đánh giá SVRDD** | Cắt dây thần kinh ảo, đối chuẩn 10 seed deterministic, p-value | `results/` | ⏳ Chuẩn bị |
+| **GD2** | **Mô hình Hóa Đồ thị & Symmetrical Baselines** | `FlyWire-BioNet` (2.92M, 45.33% mAP50), `Shuffled Control`, `Classical CNN` | [`GD2/BAO_CAO_GIAI_DOAN_2.md`](GD2/BAO_CAO_GIAI_DOAN_2.md) | ✅ **Hoàn thành** |
+| **GD3** | **Khảo sát Triệt tiêu (Ablation) & Đánh giá SVRDD** | Cắt dây thần kinh ảo, đối chuẩn 10 seed deterministic, p-value | `results/` | 🔄 Kế tiếp |
 | **GD4** | **Bài báo Khoa học & Đóng gói Tái lập** | Bản thảo LaTeX, Artifacts tái lập 1 lệnh | `paper/` & `slides/` | ⏳ Chuẩn bị |
 
 ---
 
-## 🛠️ 3. Cài đặt & Tái hiện Pipeline GD1
+## 🛠️ 3. Cài đặt & Tái hiện Pipeline GD1 - GD2
 
 ```bash
 # 1. Khởi tạo môi trường ảo
@@ -46,18 +46,20 @@ python -m venv .venv
 # 2. Cài đặt thư viện phụ thuộc
 pip install -r requirements.txt
 
-# 3. Trích xuất Connectome chuẩn hóa & xây dựng PyTorch Binary Cache
+# 3. Trích xuất Connectome chuẩn hóa & xây dựng PyTorch Binary Cache (GD1)
 python src/data/build_canonical_connectome.py
 
-# 4. Kiểm tra cấu trúc & xuất biểu đồ phân tích 300 DPI
+# 4. Kiểm tra cấu trúc & xuất biểu đồ phân tích 300 DPI (GD1)
 python src/experiments/inspect_connectome.py
 
-# 5. Kiểm tra thông số bộ dữ liệu mục tiêu SVRDD
-python src/data/verify_svrdd.py
+# 5. Đóng gói mô hình FlyWire-BioNet, Shuffled Control & chạy Benchmark SVRDD (GD2)
+python -m src.experiments.run_gd2_benchmark
 ```
 
-### Biểu đồ Phân tích Cấu trúc Connectome (300 DPI):
-Hình ảnh xuất bản chính thức được lưu tại `results/figures/gd1_connectome_structure.png`.
+### Biểu đồ Kết quả Chính thức (300 DPI):
+- **GD1 (Cấu trúc Connectome):** `results/figures/gd1_connectome_structure.png`
+- **GD2 (Đối sánh Benchmark & Pareto):** `results/figures/gd2_benchmark_comparison.png`
+- **GD2 (Bản đồ Hoạt hóa 4 Tầng Thùy Thị giác):** `results/figures/gd2_bio_feature_maps.png`
 
 ---
 
@@ -79,12 +81,17 @@ D:\Biomimetic Computer Vision\
 │   └── BAO_CAO_GIAI_DOAN_0.md         # Báo cáo nghiệm thu chính thức Giai đoạn 0
 ├── GD1/
 │   └── BAO_CAO_GIAI_DOAN_1.md         # Báo cáo nghiệm thu chính thức Giai đoạn 1
-├── GD2/ ... GD4/                      # Các thư mục giai đoạn tiếp theo
+├── GD2/
+│   └── BAO_CAO_GIAI_DOAN_2.md         # Báo cáo nghiệm thu chính thức Giai đoạn 2
+├── GD3/ ... GD4/                      # Các thư mục giai đoạn tiếp theo
 ├── results/
 │   ├── figures/
-│   │   └── gd1_connectome_structure.png  # Biểu đồ 300 DPI xuất bản
+│   │   ├── gd1_connectome_structure.png  # Biểu đồ cấu trúc Connectome (300 DPI)
+│   │   ├── gd2_benchmark_comparison.png  # Biểu đồ đối sánh hiệu năng SVRDD (300 DPI)
+│   │   └── gd2_bio_feature_maps.png      # Bản đồ đặc trưng thần kinh 4 tầng (300 DPI)
 │   └── logs/
-│       └── gd1_connectome_stats.json     # Số liệu thống kê chi tiết
+│       ├── gd1_connectome_stats.json     # Số liệu thống kê Connectome
+│       └── gd2_benchmark_metrics.json    # Số liệu đánh giá 4 mô hình trên SVRDD
 ├── src/
 │   ├── data/
 │   │   ├── build_canonical_connectome.py # Generator bảng kết nối
@@ -92,9 +99,11 @@ D:\Biomimetic Computer Vision\
 │   │   └── verify_svrdd.py               # Kiểm tra bộ dữ liệu SVRDD
 │   ├── demo_hr_detector.py            # Code kiểm chứng EMD đối kháng
 │   ├── models/
+│   │   └── flywire_bionet.py          # Kiến trúc FlyWire-BioNet & Shuffled Control
 │   ├── utils/
 │   └── experiments/
-│       └── inspect_connectome.py         # Visualizer & Metrics Inspector
+│       ├── inspect_connectome.py      # Visualizer & Metrics Inspector (GD1)
+│       └── run_gd2_benchmark.py       # Benchmark & Feature Map Visualizer (GD2)
 ├── requirements.txt
 └── README.md
 ```

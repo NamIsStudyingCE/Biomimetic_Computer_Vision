@@ -1,0 +1,97 @@
+{
+  "benchmark_dataset": "SVRDD_YOLO_320 (1,000 validation/test images, 2,612 instances, 7 classes, 320x320)",
+  "timestamp": "2026-10-27 10:10:42",
+  "models": {
+    "FlyWire_BioNet": {
+      "model_name": "FlyWire-BioNet (Proposed)",
+      "parameters": 2921397,
+      "parameters_M": 2.9214,
+      "mAP50": 0.4533,
+      "mAP50_95": 0.2392,
+      "precision": 0.6171,
+      "recall": 0.4288,
+      "f1_score": 0.506,
+      "efficiency_mAP50_per_MParams": 15.52,
+      "eval_time_sec": 11.14,
+      "per_class_mAP50": {
+        "Longitudinal Crack": 0.449,
+        "Transverse Crack": 0.382,
+        "Alligator Crack": 0.6505,
+        "Pothole": 0.3182,
+        "Manhole Cover": 0.4096,
+        "Transverse Patch": 0.5229,
+        "Longitudinal Patch": 0.4409
+      }
+    },
+    "Shuffled_Connectome_Control": {
+      "model_name": "Shuffled Connectome Control",
+      "parameters": 2921397,
+      "parameters_M": 2.9214,
+      "mAP50": 0.4155,
+      "mAP50_95": 0.2087,
+      "precision": 0.5476,
+      "recall": 0.3964,
+      "f1_score": 0.4599,
+      "efficiency_mAP50_per_MParams": 14.22,
+      "eval_time_sec": 11.02,
+      "per_class_mAP50": {
+        "Longitudinal Crack": 0.4122,
+        "Transverse Crack": 0.3402,
+        "Alligator Crack": 0.5965,
+        "Pothole": 0.2859,
+        "Manhole Cover": 0.3848,
+        "Transverse Patch": 0.5015,
+        "Longitudinal Patch": 0.3872
+      }
+    },
+    "Classical_CNN_YOLOv8n": {
+      "model_name": "Classical CNN (YOLOv8n)",
+      "parameters": 3139461,
+      "parameters_M": 3.1395,
+      "mAP50": 0.3797,
+      "mAP50_95": 0.1946,
+      "precision": 0.5596,
+      "recall": 0.3698,
+      "f1_score": 0.4453,
+      "efficiency_mAP50_per_MParams": 12.09,
+      "eval_time_sec": 8.8,
+      "per_class_mAP50": {
+        "Longitudinal Crack": 0.3736,
+        "Transverse Crack": 0.3377,
+        "Alligator Crack": 0.6092,
+        "Pothole": 0.1924,
+        "Manhole Cover": 0.2956,
+        "Transverse Patch": 0.4621,
+        "Longitudinal Patch": 0.3872
+      }
+    },
+    "Heavy_Custom_Student": {
+      "model_name": "Heavy Custom Student (Ref)",
+      "parameters": 6726661,
+      "parameters_M": 6.7267,
+      "mAP50": 0.4657,
+      "mAP50_95": 0.2473,
+      "precision": 0.6036,
+      "recall": 0.4497,
+      "f1_score": 0.5154,
+      "efficiency_mAP50_per_MParams": 6.92,
+      "eval_time_sec": 9.77,
+      "per_class_mAP50": {
+        "Longitudinal Crack": 0.468,
+        "Transverse Crack": 0.405,
+        "Alligator Crack": 0.6515,
+        "Pothole": 0.3086,
+        "Manhole Cover": 0.4309,
+        "Transverse Patch": 0.5452,
+        "Longitudinal Patch": 0.4505
+      }
+    }
+  },
+  "key_comparisons": {
+    "param_reduction_vs_YOLOv8n_pct": 6.95,
+    "param_reduction_vs_Heavy_Student_pct": 56.57,
+    "mAP50_gain_vs_YOLOv8n_pct": 7.36,
+    "recall_gain_vs_YOLOv8n_pct": 5.9,
+    "mAP50_gain_vs_Shuffled_Control_pct": 3.78
+  }
+}
