@@ -1,0 +1,60 @@
+{
+  "num_neurons": 21,
+  "num_synapse_types": 47,
+  "total_synapse_count": 2800,
+  "excitatory_count": 1876,
+  "inhibitory_count": 924,
+  "excitatory_ratio": 0.5957446808510638,
+  "inhibitory_ratio": 0.40425531914893614,
+  "layer_breakdown": {
+    "Retina": {
+      "cell_count": 1,
+      "cells": [
+        "R1_R6"
+      ],
+      "synapses_in": 0,
+      "synapses_out": 276
+    },
+    "Lamina": {
+      "cell_count": 4,
+      "cells": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "synapses_in": 388,
+      "synapses_out": 604
+    },
+    "Medulla": {
+      "cell_count": 8,
+      "cells": [
+        "Mi1",
+        "Tm3",
+        "Mi4",
+        "Mi9",
+        "Tm1",
+        "Tm2",
+        "Tm4",
+        "Tm9"
+      ],
+      "synapses_in": 492,
+      "synapses_out": 1920
+    },
+    "Lobula_Plate": {
+      "cell_count": 8,
+      "cells": [
+        "T4a",
+        "T4b",
+        "T4c",
+        "T4d",
+        "T5a",
+        "T5b",
+        "T5c",
+        "T5d"
+      ],
+      "synapses_in": 1920,
+      "synapses_out": 0
+    }
+  }
+}

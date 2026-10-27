@@ -29,14 +29,14 @@ Nghiên cứu này mô hình hóa hệ thống thị giác của ruồi giấm (
 | Giai đoạn | Nội dung cốt lõi | Sản phẩm bàn giao | Trạng thái |
 | :---: | :--- | :--- | :---: |
 | **GD0** | **Nền tảng, Toy Model & Kiểm chứng Thực nghiệm** | Mô phỏng EMD đối kháng, UI tương tác 60 FPS, khảo sát SVRDD | [`GD0/BAO_CAO_GIAI_DOAN_0.md`](GD0/BAO_CAO_GIAI_DOAN_0.md) | ✅ **Hoàn thành** |
-| **GD1** | **Trích xuất Connectome & Cột Thị giác Lục giác** | Parser bảng tĩnh FlyWire, ma trận kề $W_{ij}$ có dấu (GABA/ACh) | `data/flywire/` & `src/data/` | 🔄 Kế tiếp |
-| **GD2** | **Mô hình Hóa Đồ thị & Symmetrical Baselines** | Mạng nơ-ron Bio-vision, Shuffled Graph Control, Classical CNN | `src/models/` | ⏳ Chuẩn bị |
+| **GD1** | **Trích xuất Connectome & Cột Thị giác Lục giác** | Parser bảng tĩnh FlyWire, ma trận kề $W_{ij}$ có dấu (GABA/ACh), Biểu đồ 300 DPI | [`GD1/BAO_CAO_GIAI_DOAN_1.md`](GD1/BAO_CAO_GIAI_DOAN_1.md) | ✅ **Hoàn thành** |
+| **GD2** | **Mô hình Hóa Đồ thị & Symmetrical Baselines** | Mạng nơ-ron Bio-vision, Shuffled Graph Control, Classical CNN | `src/models/` | 🔄 Kế tiếp |
 | **GD3** | **Khảo sát Triệt tiêu (Ablation) & Đánh giá SVRDD** | Cắt dây thần kinh ảo, đối chuẩn 10 seed deterministic, p-value | `results/` | ⏳ Chuẩn bị |
 | **GD4** | **Bài báo Khoa học & Đóng gói Tái lập** | Bản thảo LaTeX, Artifacts tái lập 1 lệnh | `paper/` & `slides/` | ⏳ Chuẩn bị |
 
 ---
 
-## 🛠️ 3. Cài đặt & Tái hiện Demo GD0
+## 🛠️ 3. Cài đặt & Tái hiện Pipeline GD1
 
 ```bash
 # 1. Khởi tạo môi trường ảo
@@ -46,15 +46,18 @@ python -m venv .venv
 # 2. Cài đặt thư viện phụ thuộc
 pip install -r requirements.txt
 
-# 3. Chạy kiểm chứng mô hình tế bào T4 Hassenstein-Reichardt (Terminal)
-python src/demo_hr_detector.py
+# 3. Trích xuất Connectome chuẩn hóa & xây dựng PyTorch Binary Cache
+python src/data/build_canonical_connectome.py
+
+# 4. Kiểm tra cấu trúc & xuất biểu đồ phân tích 300 DPI
+python src/experiments/inspect_connectome.py
+
+# 5. Kiểm tra thông số bộ dữ liệu mục tiêu SVRDD
+python src/data/verify_svrdd.py
 ```
 
-### Ứng dụng Mô phỏng Trực quan Tương tác 60 FPS:
-Mở trực tiếp file sau bằng trình duyệt (Chrome/Edge/Firefox) để quan sát dạng sóng điện thế màng tế bào hoạt động thời gian thực (Neural Oscilloscope):
-```
-docs/fly_vision_simulator.html
-```
+### Biểu đồ Phân tích Cấu trúc Connectome (300 DPI):
+Hình ảnh xuất bản chính thức được lưu tại `results/figures/gd1_connectome_structure.png`.
 
 ---
 
@@ -63,23 +66,35 @@ docs/fly_vision_simulator.html
 ```
 D:\Biomimetic Computer Vision\
 ├── data/
-│   ├── flywire/             # Bảng kết nối synapse Parquet/CSV tĩnh của FlyWire
-│   └── svrdd/               # Tham chiếu dữ liệu SVRDD_YOLO_320 (8.000 ảnh)
+│   ├── flywire/             # Bảng kết nối synapse & cache nhị phân .pt
+│   │   ├── canonical_optic_lobe_synapses.csv
+│   │   ├── cell_types_metadata.json
+│   │   └── flywire_visual_graph.pt
+│   └── svrdd/               # Đặc tả & liên kết SVRDD_YOLO_320 (8.000 ảnh)
+│       └── svrdd_spec.json
 ├── docs/
 │   ├── theory_connectome_vision.md    # Tài liệu lý thuyết nền tảng & toán học
 │   └── fly_vision_simulator.html      # Ứng dụng mô phỏng tương tác 60 FPS
 ├── GD0/
 │   └── BAO_CAO_GIAI_DOAN_0.md         # Báo cáo nghiệm thu chính thức Giai đoạn 0
-├── GD1/ ... GD4/                      # Các thư mục giai đoạn tiếp theo
+├── GD1/
+│   └── BAO_CAO_GIAI_DOAN_1.md         # Báo cáo nghiệm thu chính thức Giai đoạn 1
+├── GD2/ ... GD4/                      # Các thư mục giai đoạn tiếp theo
 ├── results/
 │   ├── figures/
+│   │   └── gd1_connectome_structure.png  # Biểu đồ 300 DPI xuất bản
 │   └── logs/
+│       └── gd1_connectome_stats.json     # Số liệu thống kê chi tiết
 ├── src/
-│   ├── demo_hr_detector.py            # Code kiểm chứng EMD đối kháng đã test thành công
 │   ├── data/
+│   │   ├── build_canonical_connectome.py # Generator bảng kết nối
+│   │   ├── flywire_loader.py             # PyTorch Data Loader
+│   │   └── verify_svrdd.py               # Kiểm tra bộ dữ liệu SVRDD
+│   ├── demo_hr_detector.py            # Code kiểm chứng EMD đối kháng
 │   ├── models/
 │   ├── utils/
 │   └── experiments/
+│       └── inspect_connectome.py         # Visualizer & Metrics Inspector
 ├── requirements.txt
 └── README.md
 ```

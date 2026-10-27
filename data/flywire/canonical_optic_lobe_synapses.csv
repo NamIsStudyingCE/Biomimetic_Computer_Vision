@@ -1,0 +1,48 @@
+pre_cell,post_cell,syn_count,pre_layer,post_layer,neurotransmitter,sign,effective_weight,dx,dy,description
+R1_R6,L1,118,Retina,Lamina,His,-1,-118.0,0,0,Primary ON pathway contrast feed
+R1_R6,L2,112,Retina,Lamina,His,-1,-112.0,0,0,Primary OFF pathway contrast feed
+R1_R6,L3,46,Retina,Lamina,His,-1,-46.0,0,0,High-sensitivity low-contrast branch
+L4,L2,28,Lamina,Lamina,GABA,-1,-28.0,-1,0,L4 inter-column surround inhibition
+L4,L2,28,Lamina,Lamina,GABA,-1,-28.0,1,0,L4 inter-column surround inhibition
+L4,L2,28,Lamina,Lamina,GABA,-1,-28.0,0,-1,L4 inter-column surround inhibition
+L4,L2,28,Lamina,Lamina,GABA,-1,-28.0,0,1,L4 inter-column surround inhibition
+L1,Mi1,94,Lamina,Medulla,ACh,1,94.0,0,0,L1 to Mi1 delayed ON branch
+L1,Tm3,58,Lamina,Medulla,ACh,1,58.0,0,0,L1 to Tm3 fast ON branch
+L1,Mi4,42,Lamina,Medulla,ACh,1,42.0,0,0,L1 to Mi4 inhibitory feed
+L1,Mi9,26,Lamina,Medulla,ACh,1,26.0,0,0,L1 to Mi9 glutamatergic feed
+L2,Tm1,88,Lamina,Medulla,ACh,1,88.0,0,0,L2 to Tm1 delayed OFF branch
+L2,Tm2,82,Lamina,Medulla,ACh,1,82.0,0,0,L2 to Tm2 fast OFF branch
+L2,Tm4,48,Lamina,Medulla,ACh,1,48.0,0,0,L2 to Tm4 trailing OFF branch
+L3,Tm9,54,Lamina,Medulla,ACh,1,54.0,0,0,L3 to Tm9 inhibitory OFF branch
+Mi1,T4a,86,Medulla,Lobula_Plate,ACh,1,86.0,0,0,Leading excitatory to T4a
+Tm3,T4a,54,Medulla,Lobula_Plate,ACh,1,54.0,-1,0,Trailing excitatory to T4a
+Mi4,T4a,44,Medulla,Lobula_Plate,GABA,-1,-44.0,1,0,GABAergic opponent suppression to T4a
+Mi9,T4a,38,Medulla,Lobula_Plate,Glu,-1,-38.0,1,0,Glu opponent suppression to T4a
+Mi1,T4b,86,Medulla,Lobula_Plate,ACh,1,86.0,0,0,Leading excitatory to T4b
+Tm3,T4b,54,Medulla,Lobula_Plate,ACh,1,54.0,1,0,Trailing excitatory to T4b
+Mi4,T4b,44,Medulla,Lobula_Plate,GABA,-1,-44.0,-1,0,GABAergic opponent suppression to T4b
+Mi9,T4b,38,Medulla,Lobula_Plate,Glu,-1,-38.0,-1,0,Glu opponent suppression to T4b
+Mi1,T4c,86,Medulla,Lobula_Plate,ACh,1,86.0,0,0,Leading excitatory to T4c
+Tm3,T4c,54,Medulla,Lobula_Plate,ACh,1,54.0,0,-1,Trailing excitatory to T4c
+Mi4,T4c,44,Medulla,Lobula_Plate,GABA,-1,-44.0,0,1,GABAergic opponent suppression to T4c
+Mi9,T4c,38,Medulla,Lobula_Plate,Glu,-1,-38.0,0,1,Glu opponent suppression to T4c
+Mi1,T4d,86,Medulla,Lobula_Plate,ACh,1,86.0,0,0,Leading excitatory to T4d
+Tm3,T4d,54,Medulla,Lobula_Plate,ACh,1,54.0,0,1,Trailing excitatory to T4d
+Mi4,T4d,44,Medulla,Lobula_Plate,GABA,-1,-44.0,0,-1,GABAergic opponent suppression to T4d
+Mi9,T4d,38,Medulla,Lobula_Plate,Glu,-1,-38.0,0,-1,Glu opponent suppression to T4d
+Tm1,T5a,84,Medulla,Lobula_Plate,ACh,1,84.0,0,0,Delayed excitatory to T5a
+Tm2,T5a,76,Medulla,Lobula_Plate,ACh,1,76.0,0,0,Direct excitatory to T5a
+Tm4,T5a,46,Medulla,Lobula_Plate,ACh,1,46.0,-1,0,Trailing excitatory to T5a
+Tm9,T5a,52,Medulla,Lobula_Plate,Glu,-1,-52.0,1,0,Glutamatergic opponent suppression to T5a
+Tm1,T5b,84,Medulla,Lobula_Plate,ACh,1,84.0,0,0,Delayed excitatory to T5b
+Tm2,T5b,76,Medulla,Lobula_Plate,ACh,1,76.0,0,0,Direct excitatory to T5b
+Tm4,T5b,46,Medulla,Lobula_Plate,ACh,1,46.0,1,0,Trailing excitatory to T5b
+Tm9,T5b,52,Medulla,Lobula_Plate,Glu,-1,-52.0,-1,0,Glutamatergic opponent suppression to T5b
+Tm1,T5c,84,Medulla,Lobula_Plate,ACh,1,84.0,0,0,Delayed excitatory to T5c
+Tm2,T5c,76,Medulla,Lobula_Plate,ACh,1,76.0,0,0,Direct excitatory to T5c
+Tm4,T5c,46,Medulla,Lobula_Plate,ACh,1,46.0,0,-1,Trailing excitatory to T5c
+Tm9,T5c,52,Medulla,Lobula_Plate,Glu,-1,-52.0,0,1,Glutamatergic opponent suppression to T5c
+Tm1,T5d,84,Medulla,Lobula_Plate,ACh,1,84.0,0,0,Delayed excitatory to T5d
+Tm2,T5d,76,Medulla,Lobula_Plate,ACh,1,76.0,0,0,Direct excitatory to T5d
+Tm4,T5d,46,Medulla,Lobula_Plate,ACh,1,46.0,0,1,Trailing excitatory to T5d
+Tm9,T5d,52,Medulla,Lobula_Plate,Glu,-1,-52.0,0,-1,Glutamatergic opponent suppression to T5d

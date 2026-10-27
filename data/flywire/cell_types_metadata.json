@@ -1,0 +1,128 @@
+{
+  "R1_R6": {
+    "layer": "Retina",
+    "pathway": "Broadband",
+    "nt": "His",
+    "role": "Photoreceptor input"
+  },
+  "L1": {
+    "layer": "Lamina",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Primary ON contrast filter"
+  },
+  "L2": {
+    "layer": "Lamina",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Primary OFF contrast filter"
+  },
+  "L3": {
+    "layer": "Lamina",
+    "pathway": "ON/OFF",
+    "nt": "ACh",
+    "role": "Low-contrast sensitivity"
+  },
+  "L4": {
+    "layer": "Lamina",
+    "pathway": "Lateral",
+    "nt": "GABA",
+    "role": "Inter-column lateral inhibition"
+  },
+  "Mi1": {
+    "layer": "Medulla",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Delayed excitatory channel to T4"
+  },
+  "Tm3": {
+    "layer": "Medulla",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Direct trailing excitatory channel to T4"
+  },
+  "Mi4": {
+    "layer": "Medulla",
+    "pathway": "ON",
+    "nt": "GABA",
+    "role": "Opponent inhibitory channel to T4"
+  },
+  "Mi9": {
+    "layer": "Medulla",
+    "pathway": "ON",
+    "nt": "Glu",
+    "role": "Glutamatergic opponent filter to T4"
+  },
+  "Tm1": {
+    "layer": "Medulla",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Delayed excitatory channel to T5"
+  },
+  "Tm2": {
+    "layer": "Medulla",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Fast excitatory channel to T5"
+  },
+  "Tm4": {
+    "layer": "Medulla",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Trailing excitatory channel to T5"
+  },
+  "Tm9": {
+    "layer": "Medulla",
+    "pathway": "OFF",
+    "nt": "Glu",
+    "role": "Opponent inhibitory channel to T5"
+  },
+  "T4a": {
+    "layer": "Lobula_Plate",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Right, +x)"
+  },
+  "T4b": {
+    "layer": "Lobula_Plate",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Left, -x)"
+  },
+  "T4c": {
+    "layer": "Lobula_Plate",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Up, +y)"
+  },
+  "T4d": {
+    "layer": "Lobula_Plate",
+    "pathway": "ON",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Down, -y)"
+  },
+  "T5a": {
+    "layer": "Lobula_Plate",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Right, +x)"
+  },
+  "T5b": {
+    "layer": "Lobula_Plate",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Left, -x)"
+  },
+  "T5c": {
+    "layer": "Lobula_Plate",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Up, +y)"
+  },
+  "T5d": {
+    "layer": "Lobula_Plate",
+    "pathway": "OFF",
+    "nt": "ACh",
+    "role": "Direction-selective motion (Down, -y)"
+  }
+}

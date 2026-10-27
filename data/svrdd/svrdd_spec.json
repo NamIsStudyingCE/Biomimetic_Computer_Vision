@@ -1,0 +1,38 @@
+{
+  "dataset_name": "SVRDD (Road Surface Damage Detection)",
+  "source_path": "D:\\AI4EmbSys\\SVRDD_YOLO_320",
+  "data_yaml_path": "D:\\AI4EmbSys\\SVRDD_YOLO_320\\data.yaml",
+  "image_resolution": [
+    320,
+    320,
+    3
+  ],
+  "num_classes": 7,
+  "class_names": [
+    "damage1",
+    "damage2",
+    "damage3",
+    "damage4",
+    "damage5",
+    "damage6",
+    "damage7"
+  ],
+  "splits": {
+    "train": 6000,
+    "val": 1000,
+    "test": 1000,
+    "total": 8000
+  },
+  "target_baselines": {
+    "yolov8n_student_standard": {
+      "params": 3139461,
+      "mAP50": 0.3797,
+      "recall": 0.3698
+    },
+    "yolov8_custom_student_kd": {
+      "params": 6726661,
+      "mAP50": 0.4657,
+      "recall": 0.4497
+    }
+  }
+}

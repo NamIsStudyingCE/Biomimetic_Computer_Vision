@@ -25,9 +25,9 @@ venv/
 ENV/
 
 # Large Datasets & Binary Caches
-data/svrdd/
+data/svrdd/images/
+data/svrdd/labels/
 data/flywire/*.parquet
-data/flywire/*.csv
 data/flywire/*.pt
 data/flywire/*.zip
 *.zip
