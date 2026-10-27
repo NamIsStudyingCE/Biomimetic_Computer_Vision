@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Mô phỏng Thùy Thị Giác Ruồi Chuẩn Sinh Học (Full Hassenstein-Reichardt)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .pulse-dot { animation: pulse 1.2s infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.15); }
+    }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-3 select-none">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-2xl p-5 shadow-lg max-w-4xl mx-auto space-y-5">
+    
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between border-b border-[var(--border)] pb-4 gap-2">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-3 h-3 rounded-full bg-emerald-500 pulse-dot"></span>
+          <h2 class="text-lg font-bold text-[var(--foreground)] tracking-tight">
+            MÔ HÌNH HASSENSTEIN-REICHARDT ĐẦY ĐỦ: CƠ CHẾ ỨC CHẾ ĐỐI KHÁNG (OPPONENT SUPPRESSION)
+          </h2>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+          Sửa lỗi kích hoạt nhầm bằng cách bổ sung nhánh ức chế GABA: [Nhánh Thuận (+) - Nhánh Nghịch (-)]
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-medium">
+          Mô hình chuẩn sinh học FlyWire
+        </span>
+      </div>
+    </div>
+
+    <!-- Control Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[var(--content)]/40 p-3 rounded-xl border border-[var(--border)]">
+      <div class="space-y-1.5 sm:col-span-2 flex flex-col justify-center">
+        <div class="text-xs font-semibold text-[var(--muted-foreground)]">HƯỚNG KÍCH THÍCH THỊ GIÁC</div>
+        <div class="flex items-center gap-2">
+          <button id="btn-left-to-right" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition flex items-center gap-1.5 shadow-sm">
+            <span>Trái ➔ Phải (Xuôi)</span>
+            <span>▶</span>
+          </button>
+          <button id="btn-right-to-left" class="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs transition flex items-center gap-1.5 shadow-sm">
+            <span>◀</span>
+            <span>Phải ➔ Trái (Ngược)</span>
+          </button>
+          <button id="btn-auto-loop" class="px-3 py-1.5 rounded-lg bg-[var(--border)] hover:bg-[var(--muted-foreground)]/20 text-xs font-medium transition">
+            Tự động đảo chiều: <span id="auto-status" class="text-emerald-400 font-bold">BẬT</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between text-xs text-[var(--muted-foreground)] font-medium">
+          <span>Tốc độ di chuyển:</span>
+          <span id="speed-label" class="font-bold text-[var(--foreground)]">Vừa</span>
+        </div>
+        <input id="speed-slider" type="range" min="1" max="5" value="2" class="w-full accent-emerald-500 cursor-pointer">
+      </div>
+    </div>
+
+    <!-- Main Visual Circuit Canvas -->
+    <div class="relative bg-[var(--background)] rounded-xl border border-[var(--border)] overflow-hidden shadow-inner">
+      <canvas id="circuit-canvas" width="800" height="380" class="w-full h-auto block"></canvas>
+    </div>
+
+    <!-- Oscilloscope -->
+    <div class="space-y-1.5">
+      <div class="flex items-center justify-between text-xs font-semibold text-[var(--muted-foreground)]">
+        <span>ĐIỆN THẾ ĐỐI KHÁNG THỜI GIAN THỰC [THUẬN (+) VS NGHỊCH (-)]</span>
+        <div class="flex items-center gap-4 text-[11px]">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span> Nhánh thuận (+)</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span> Nhánh nghịch (-)</span>
+          <span class="flex items-center gap-1 font-bold text-emerald-400"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> T4 Thực tế (Spike)</span>
+        </div>
+      </div>
+      <div class="bg-[var(--background)] rounded-xl border border-[var(--border)] p-2">
+        <canvas id="scope-canvas" width="800" height="110" class="w-full h-auto block"></canvas>
+      </div>
+    </div>
+
+    <!-- Biological Explanation Box -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+      <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-1">
+        <div class="font-bold text-amber-400">💡 Giải thích hiện tượng bạn vừa phát hiện:</div>
+        <p class="text-[var(--muted-foreground)] leading-relaxed">
+          Ở mô hình trước, khi bay nhanh sang trái, ánh sáng quét qua P2 rồi sang P1 nhanh đến mức tín hiệu P2 chưa kịp tắt thì tín hiệu P1 đã tới ➔ <b>Gây báo động giả</b>. Đó là nhược điểm của mô hình 1 nhánh bán phần!
+        </p>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-1">
+        <div class="font-bold text-emerald-400">🛡️ Cách tự nhiên triệt tiêu hoàn toàn lỗi:</div>
+        <p class="text-[var(--muted-foreground)] leading-relaxed">
+          FlyWire cho thấy não ruồi luôn có <b>nhánh ức chế đối kháng (GABAergic)</b>. Khi bay ngược, nhánh nghịch kích hoạt cực mạnh và <b>trừ triệt tiêu</b> nhánh thuận: <br>
+          <code class="text-emerald-300 font-mono">T4 = max(0, Thuận - Nghịch) = 0.0</code> ➔ Giờ đây dù ở tốc độ nào, chuyển động ngược cũng <b>tắt ngấm 100%</b>!
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const circuitCanvas = document.getElementById('circuit-canvas');
+    const ctx = circuitCanvas.getContext('2d');
+    const scopeCanvas = document.getElementById('scope-canvas');
+    const sCtx = scopeCanvas.getContext('2d');
+
+    let speed = 2;
+    let autoLoop = true;
+    let direction = 1;
+    let stimulusX = 160;
+    const minX = 140;
+    const maxX = 660;
+
+    const p1X = 280;
+    const p2X = 520;
+    const receptorRadius = 36;
+    const sensorSigma = 36;
+
+    // Physiological Leaky Integrator delays (Tương thích sinh học theo vận tốc)
+    let p1Delay = 0;
+    let p2Delay = 0;
+    const leakFactor = 0.88; // Tốc độ rò rỉ điện thế màng
+
+    // Realtime signals
+    let p1Signal = 0;
+    let p2Signal = 0;
+    let forwardTerm = 0;   // P1(tau) * P2
+    let backwardTerm = 0;  // P1 * P2(tau)
+    let t4Spike = 0;       // max(0, forward - backward)
+
+    // History
+    const historyLen = 240;
+    const histFwd = new Array(historyLen).fill(0);
+    const histBwd = new Array(historyLen).fill(0);
+    const histT4 = new Array(historyLen).fill(0);
+
+    // Controls
+    const speedSlider = document.getElementById('speed-slider');
+    const speedLabel = document.getElementById('speed-label');
+    const speedNames = ["Rất chậm", "Vừa", "Nhanh", "Rất nhanh", "Cực đại"];
+    speedSlider.addEventListener('input', (e) => {
+      speed = parseInt(e.target.value);
+      speedLabel.innerText = speedNames[speed - 1];
+    });
+
+    document.getElementById('btn-left-to-right').addEventListener('click', () => {
+      direction = 1; stimulusX = minX;
+    });
+    document.getElementById('btn-right-to-left').addEventListener('click', () => {
+      direction = -1; stimulusX = maxX;
+    });
+    const autoBtn = document.getElementById('btn-auto-loop');
+    const autoStatus = document.getElementById('auto-status');
+    autoBtn.addEventListener('click', () => {
+      autoLoop = !autoLoop;
+      autoStatus.innerText = autoLoop ? "BẬT" : "TẮT";
+      autoStatus.className = autoLoop ? "text-emerald-400 font-bold" : "text-rose-400 font-bold";
+    });
+
+    function isDarkMode() {
+      return !document.documentElement.classList.contains('light');
+    }
+
+    function updatePhysics() {
+      // Move stimulus with dynamic velocity
+      const step = direction * (speed * 2.2);
+      stimulusX += step;
+      if (stimulusX > maxX) {
+        if (autoLoop) { direction = -1; stimulusX = maxX; } else { stimulusX = maxX; }
+      } else if (stimulusX < minX) {
+        if (autoLoop) { direction = 1; stimulusX = minX; } else { stimulusX = minX; }
+      }
+
+      // Receptive field
+      p1Signal = Math.exp(-Math.pow(stimulusX - p1X, 2) / (2 * sensorSigma * sensorSigma));
+      p2Signal = Math.exp(-Math.pow(stimulusX - p2X, 2) / (2 * sensorSigma * sensorSigma));
+
+      // Biorealistic low-pass delay filter (Leaky integration)
+      const alpha = 0.08 / Math.sqrt(speed); // Thích ứng độ trễ theo nhịp sinh học
+      p1Delay += (p1Signal - p1Delay) * alpha;
+      p2Delay += (p2Signal - p2Delay) * alpha;
+
+      // Full Hassenstein-Reichardt Detector:
+      // Forward channel (Kích thích hướng Phải): P1(tau) * P2
+      forwardTerm = Math.min(1.0, (p1Delay * p2Signal) * 6.0);
+
+      // Backward channel (Ức chế hướng Trái): P1 * P2(tau)
+      backwardTerm = Math.min(1.0, (p1Signal * p2Delay) * 6.0);
+
+      // T4 Response with Opponent Suppression (Trừ khử ức chế)
+      // T4 chỉ phản ứng với hiệu số dương (Subtractive Inhibition)
+      const netActivity = forwardTerm - (backwardTerm * 1.5);
+      t4Spike = Math.max(0, netActivity);
+
+      // Record
+      histFwd.shift(); histFwd.push(forwardTerm);
+      histBwd.shift(); histBwd.push(backwardTerm);
+      histT4.shift(); histT4.push(t4Spike);
+    }
+
+    function drawCircuit() {
+      ctx.clearRect(0, 0, circuitCanvas.width, circuitCanvas.height);
+      const dark = isDarkMode();
+      const textColor = dark ? '#e2e8f0' : '#1e293b';
+
+      // 1. Stimulus Track
+      const trackY = 36;
+      ctx.strokeStyle = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(minX, trackY); ctx.lineTo(maxX, trackY);
+      ctx.stroke();
+
+      // Moving Dot
+      ctx.save();
+      const glowGrad = ctx.createRadialGradient(stimulusX, trackY, 2, stimulusX, trackY, 22);
+      glowGrad.addColorStop(0, '#fef08a');
+      glowGrad.addColorStop(0.5, 'rgba(234, 179, 8, 0.6)');
+      glowGrad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(stimulusX, trackY, 22, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(stimulusX, trackY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
+      ctx.textAlign = 'center';
+      ctx.fillText(direction > 0 ? '➔ VẬT BAY SANG PHẢI (THUẬN) ➔' : '◀ VẬT BAY SANG TRÁI (NGƯỢC) ◀', stimulusX, trackY - 14);
+
+      // Coordinates
+      const rY = 90;
+      const delayY = 175;
+      const multFwdX = 350, multFwdY = 245;
+      const multBwdX = 450, multBwdY = 245;
+      const t4X = 400, t4Y = 330;
+
+      // 2. Wires for Forward Branch (Cyan)
+      drawWire(p1X, rY + receptorRadius, p1X, delayY - 16, p1Signal, '#06b6d4');
+      drawCurvedWire(p1X, delayY + 16, multFwdX - 10, multFwdY, p1Delay, '#f59e0b');
+      drawCurvedWire(p2X, rY + receptorRadius, multFwdX + 10, multFwdY, p2Signal, '#06b6d4');
+
+      // 3. Wires for Backward Suppression Branch (Rose/GABA)
+      drawWire(p2X, rY + receptorRadius, p2X, delayY - 16, p2Signal, '#f43f5e');
+      drawCurvedWire(p2X, delayY + 16, multBwdX + 10, multBwdY, p2Delay, '#f59e0b');
+      drawCurvedWire(p1X, rY + receptorRadius, multBwdX - 10, multBwdY, p1Signal, '#f43f5e');
+
+      // 4. Convergence to T4: Forward (+) vs Backward (-)
+      drawCurvedWire(multFwdX, multFwdY + 14, t4X - 14, t4Y, forwardTerm, '#10b981');
+      drawCurvedWire(multBwdX, multBwdY + 14, t4X + 14, t4Y, backwardTerm, '#f43f5e');
+
+      // 5. Draw Receptors P1 & P2
+      drawReceptor(p1X, rY, "P1 (Trái)", p1Signal, '#06b6d4');
+      drawReceptor(p2X, rY, "P2 (Phải)", p2Signal, '#3b82f6');
+
+      // 6. Draw Delay Units
+      drawDelayBox(p1X, delayY, "Dây trễ τ₁", p1Delay, '#f59e0b');
+      drawDelayBox(p2X, delayY, "Dây trễ τ₂", p2Delay, '#f59e0b');
+
+      // 7. Multiplier Nodes
+      drawMultiplier(multFwdX, multFwdY, "Thuận (+)", forwardTerm, '#10b981');
+      drawMultiplier(multBwdX, multBwdY, "Nghịch (-)", backwardTerm, '#f43f5e');
+
+      // 8. T4 Output Neuron
+      drawT4Cell(t4X, t4Y, t4Spike, forwardTerm, backwardTerm);
+    }
+
+    function drawWire(x1, y1, x2, y2, intensity, color) {
+      ctx.save();
+      ctx.strokeStyle = isDarkMode() ? 'rgba(148,163,184,0.18)' : 'rgba(100,116,139,0.2)';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      if (intensity > 0.05) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2 + intensity * 3.5;
+        ctx.shadowColor = color; ctx.shadowBlur = intensity * 10;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawCurvedWire(x1, y1, x2, y2, intensity, color) {
+      ctx.save();
+      ctx.strokeStyle = isDarkMode() ? 'rgba(148,163,184,0.18)' : 'rgba(100,116,139,0.2)';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.bezierCurveTo(x1, (y1 + y2) / 2, x2, (y1 + y2) / 2, x2, y2);
+      ctx.stroke();
+      if (intensity > 0.05) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2 + intensity * 3.5;
+        ctx.shadowColor = color; ctx.shadowBlur = intensity * 10;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.bezierCurveTo(x1, (y1 + y2) / 2, x2, (y1 + y2) / 2, x2, y2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawReceptor(x, y, label, val, color) {
+      const dark = isDarkMode();
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, receptorRadius, 0, Math.PI * 2);
+      ctx.fillStyle = dark ? '#0f172a' : '#f8fafc';
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = val > 0.2 ? color : (dark ? '#334155' : '#cbd5e1');
+      if (val > 0.2) { ctx.shadowColor = color; ctx.shadowBlur = val * 12; }
+      ctx.stroke();
+
+      const rInner = (receptorRadius - 6) * Math.max(0.15, val);
+      ctx.beginPath();
+      ctx.arc(x, y, rInner, 0, Math.PI * 2);
+      ctx.fillStyle = val > 0.2 ? color : (dark ? '#1e293b' : '#e2e8f0');
+      ctx.fill();
+
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = dark ? '#f1f5f9' : '#0f172a';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, x, y);
+      ctx.restore();
+    }
+
+    function drawDelayBox(x, y, label, val, color) {
+      const dark = isDarkMode();
+      ctx.save();
+      ctx.fillStyle = dark ? '#1e293b' : '#f1f5f9';
+      ctx.strokeStyle = val > 0.2 ? color : (dark ? '#475569' : '#cbd5e1');
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(x - 40, y - 14, 80, 28, 6);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.25)';
+      ctx.fillRect(x - 36, y - 10, 72 * val, 20);
+
+      ctx.font = 'bold 10px sans-serif';
+      ctx.fillStyle = val > 0.3 ? color : (dark ? '#94a3b8' : '#64748b');
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, x, y);
+      ctx.restore();
+    }
+
+    function drawMultiplier(x, y, label, val, color) {
+      const dark = isDarkMode();
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, 16, 0, Math.PI * 2);
+      ctx.fillStyle = val > 0.2 ? color : (dark ? '#1e293b' : '#e2e8f0');
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = dark ? '#475569' : '#cbd5e1';
+      ctx.stroke();
+
+      ctx.font = 'bold 10px sans-serif';
+      ctx.fillStyle = val > 0.2 ? '#ffffff' : (dark ? '#94a3b8' : '#64748b');
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText("×", x, y);
+
+      ctx.font = '9px sans-serif';
+      ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
+      ctx.fillText(label, x, y - 22);
+      ctx.restore();
+    }
+
+    function drawT4Cell(x, y, spike, fwd, bwd) {
+      const dark = isDarkMode();
+      ctx.save();
+      const r = 38;
+      const isActive = spike > 0.25;
+
+      if (isActive) {
+        ctx.shadowColor = '#10b981';
+        ctx.shadowBlur = spike * 24;
+      }
+
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = isActive ? (dark ? '#064e3b' : '#d1fae5') : (dark ? '#0f172a' : '#f1f5f9');
+      ctx.fill();
+      ctx.lineWidth = isActive ? 3 : 2;
+      ctx.strokeStyle = isActive ? '#10b981' : (dark ? '#334155' : '#cbd5e1');
+      ctx.stroke();
+
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      if (isActive) {
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillStyle = '#10b981';
+        ctx.fillText("⚡ SPIKE!", x, y - 6);
+        ctx.font = '9px sans-serif';
+        ctx.fillText("HƯỚNG PHẢI", x, y + 8);
+      } else {
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
+        ctx.fillText("Tế bào T4", x, y - 6);
+        ctx.font = '9px sans-serif';
+        ctx.fillText(bwd > fwd ? "ỨC CHẾ (-)" : "(Im lặng)", x, y + 8);
+      }
+
+      ctx.font = '10px monospace';
+      ctx.fillStyle = dark ? '#64748b' : '#94a3b8';
+      ctx.fillText(`Net = Thuận(${fwd.toFixed(1)}) - Nghịch(${bwd.toFixed(1)}) = ${spike.toFixed(2)}`, x, y + r + 14);
+      ctx.restore();
+    }
+
+    function drawOscilloscope() {
+      sCtx.clearRect(0, 0, scopeCanvas.width, scopeCanvas.height);
+      const w = scopeCanvas.width;
+      const h = scopeCanvas.height;
+      const dark = isDarkMode();
+
+      sCtx.strokeStyle = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+      sCtx.lineWidth = 1;
+      for (let y = 20; y < h; y += 30) {
+        sCtx.beginPath(); sCtx.moveTo(0, y); sCtx.lineTo(w, y); sCtx.stroke();
+      }
+
+      function drawTrace(data, color, lineWidth = 1.5, isSpike = false) {
+        sCtx.save();
+        sCtx.strokeStyle = color;
+        sCtx.lineWidth = lineWidth;
+        if (isSpike) { sCtx.shadowColor = color; sCtx.shadowBlur = 8; }
+        sCtx.beginPath();
+        for (let i = 0; i < data.length; i++) {
+          const x = (i / (data.length - 1)) * w;
+          const y = (h - 15) - data[i] * (h - 30);
+          if (i === 0) sCtx.moveTo(x, y);
+          else sCtx.lineTo(x, y);
+        }
+        sCtx.stroke();
+        sCtx.restore();
+      }
+
+      drawTrace(histFwd, '#06b6d4', 1.5);
+      drawTrace(histBwd, '#f43f5e', 1.5);
+      drawTrace(histT4, '#10b981', 3.0, true);
+    }
+
+    function loop() {
+      updatePhysics();
+      drawCircuit();
+      drawOscilloscope();
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

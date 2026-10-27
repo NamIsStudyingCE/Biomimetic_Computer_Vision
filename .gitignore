@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+
+# Large Datasets & Binary Caches
+data/svrdd/
+data/flywire/*.parquet
+data/flywire/*.csv
+data/flywire/*.pt
+data/flywire/*.zip
+*.zip
+*.tar.gz
+*.h5
+*.weights
+*.pt
+*.pth
+*.onnx
+*.tflite
+
+# Logs & Temp
+*.log
+.tmp/
+.temp/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
